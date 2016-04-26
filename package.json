@@ -1,0 +1,15 @@
+{
+  "name": "msbop",
+  "version": "1.0.0",
+  "description": "this is the repository of \"microsoft beautiful of programming\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "superagent": "^1.8.3"
+  }
+}

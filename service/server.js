@@ -1,8 +1,16 @@
 var express = require('express'),
-	  app			= express()
+	  app			= express(),
+	  api			= require('./api.js')
 
-app.get('/',function(res,rsp) {
-	res.render
+app.get('/:query',function(req,res) {
+	var query = req.params.query
+	api.get(query,'',function(apierr,apires) {
+			if (apires) {
+				res.send(apires.body)
+			} else {
+				res.send(apierr)
+			}
+	})
 })
 
-app.listen(3000)
+app.listen(8120);

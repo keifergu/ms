@@ -1,7 +1,5 @@
 var superagent = require('superagent')
 
-var config='Id,AA.AuId,C.CId,J.JId,F.FId,AA.AfId'
-
 /**
  * 根据expr表达式获得数据,例如 Y=1995
  * @param  {string}   query    express表达式,详细见微软文档,形式为: Y=195
@@ -11,33 +9,47 @@ var config='Id,AA.AuId,C.CId,J.JId,F.FId,AA.AfId'
  */
 function get(query, attr, callback) {
 	superagent
-		.get('https://api.projectoxford.ai/academic/v1.0/evaluate')
+		.get('https://oxfordhk.azure-api.net/academic/v1.0/evaluate')
 		.query({
 			'expr':query,
-			'model':'latest',
 			'count':10,
-			'attributes':attr ||"Id"
+			'attributes':attr,
+			'subscription-key':'f7cc29509a8443c5b3a5e56b0e38b5a6'
 		})
-		.set('Ocp-Apim-Subscription-Key','30099200a80747a09c926cfbaf37debb')
 		.end(callback)
 }
 
 /**
- * 根据一条数据获得该数据的所有返回
- * @param  {object}   data     数据内容,类似{id:195464}
- * @param  {Function} callback 完成请求后的回调函数
- * @return {[type]}            [description]
+ * 根据所给的Id查找主体
+ * @param  {number} number Id
+ * @return {[type]}        [description]
  */
-function getAll(data, callback) {
-	var query
-	var attr = config
-	for(var value in data){
-		query = value+"="+data[value]
-	}
-	get(query,callback)
+function getByNum(number, callback) {
+	/**
+	OR(
+		OR(
+			OR(
+				Id=2152195021,
+				Composite(C.CId=2152195021)
+			),
+			OR(
+				Composite(AA.AuId=2152195021),
+				Composite(AA.AfId=2152195021)
+			)
+		),
+		OR(
+			Composite(F.FId=2152195021),
+			Composite(J.JId=2152195021)
+		)
+	)
+	 * @type {String}
+	 */
+	var query="OR(OR(OR(Id="+number+",Composite(C.CId="+number+")),OR(Composite(AA.AuId="+number+"),Composite(AA.AfId="+number+"))),OR(Composite(F.FId="+number+"),Composite(J.JId="+number+")))";
+	var config='Id,AA.AuId,C.CId,J.JId,F.FId,AA.AfId'
+	get(query, config, callback)
 }
 
 module.exports={
 	get:get,
-	getAll:getAll
+	getByNum:getByNum
 };

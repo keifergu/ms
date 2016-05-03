@@ -45,7 +45,7 @@ function getByNum(number, callback) {
 	 * @type {String}
 	 */
 	var query="OR(OR(OR(Id="+number+",Composite(C.CId="+number+")),OR(Composite(AA.AuId="+number+"),Composite(AA.AfId="+number+"))),OR(Composite(F.FId="+number+"),Composite(J.JId="+number+")))";
-	var config='Id,AA.AuId,C.CId,J.JId,F.FId,AA.AfId'
+	var config='Id,AA.AuId,C.CId,J.JId,F.FId,AA.AfId,RId'
 	get(query, config, callback)
 }
 
